@@ -1,15 +1,20 @@
 <script setup lang="ts">
-  import { ref } from 'vue'
-
-  defineProps<{ msg: string }>()
-
-  const count = ref(0)
+  import Nav from './Nav.vue';
+  import Workspace from './Workspace.vue';
 </script>
 
 <template>
-  <h1>{{ msg }}</h1>
-
-  <div class="card">
-    <button type="button" @click="count++">count is {{ count }}</button>
+  <div class="dashboard">
+    <Nav />
+    <Workspace /> 
   </div>
 </template>
+
+<style scoped>
+  .dashboard {
+    display: flex;
+    height: 100vh;
+    min-width: 1200px;
+    min-height: 800px;
+  }
+</style>

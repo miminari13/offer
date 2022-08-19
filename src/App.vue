@@ -5,7 +5,5 @@
 </script>
 
 <template>
-  <DashBoard msg="Let's start" />
+  <DashBoard />
 </template>
-
-<style scoped></style>
