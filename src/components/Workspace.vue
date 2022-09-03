@@ -1,19 +1,23 @@
 <script setup lang="ts">
+  import draggable from 'vuedraggable'
   import Header from './Header.vue'
   import { ref } from 'vue'
   import type { Ref } from 'vue'
 
+
   interface StatusesI {
+    id: number,
     name: string,
     edit: boolean
   }
   const statusName = ref('')  
   const statusList: Ref<StatusesI[]>  = ref([])
   const isRenaming = ref(false)
+  const isDragging = ref(false)
 
   function addStatus() {
     if (statusName.value) {
-      statusList.value.push({name: statusName.value, edit: false});
+      statusList.value.push({id: statusList.value.length, name: statusName.value, edit: false});
       statusName.value = ''
     }
   }
@@ -42,19 +46,25 @@
 <template>
   <div class="workspace">
     <Header />
-    <!-- {{statusList}} -->
+    {{statusList}}
     <div class="statuses">
-      <ul class="statuses__list">
-        <li v-for="(status, statusIndex) in statusList" :key="statusIndex">
-          <span v-if="status.edit == false">{{ status.name }}</span>
-          <form v-else @submit.prevent="saveStatus(statusIndex)">
-            <input class="statuses__input" type="text" v-model="status.name" />
-            <button class="statuses__add" type="submit" title="+"></button>
-          </form>
-          <span @click="delStatus(statusIndex)">del.</span>
-          <span @click="renameStatus(statusIndex)">edit</span>
-        </li>
-      </ul>
+
+      <div class="statuses__list">
+        <draggable v-model="statusList" group="statuses" @start="isDragging=true" @end="isDragging=false" item-key="id">
+          <template #item="{ element, index }" >
+            <div class="statuses-list__item">
+              <span v-if="element.edit == false">{{ element.name }}</span>
+              <form v-else @submit.prevent="saveStatus(index)">
+                <input class="statuses__input" type="text" v-model="element.name" />
+                <button class="statuses__add" type="submit" title="+"></button>
+              </form>
+              <span @click="delStatus(index)">del//</span>
+              <span @click="renameStatus(index)">edit</span>
+            </div>
+          </template>
+        </draggable>
+      </div>
+
       <form class="statuses__form" @submit.prevent="addStatus" v-if="isRenaming === false">
         <input class="statuses__input" type="text" v-model="statusName" />
         <button class="statuses__add" type="submit" title="Add new status">
@@ -87,7 +97,7 @@
     padding: 0;
   }
 
-  .statuses__list li {
+  .statuses__list li, .statuses-list__item {
     width: 100px;
     padding: .3rem 1rem .3rem 0;
     text-overflow: ellipsis;

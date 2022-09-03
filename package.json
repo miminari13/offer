@@ -32,12 +32,14 @@
       ]
     },
     "win": {
-      "target": [{
-        "target": "portable",
-        "arch": [
-          "x64"
-        ]
-      }],
+      "target": [
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
       "artifactName": "${productName}_${version}.${ext}"
     },
     "nsis": {
@@ -48,7 +50,8 @@
     }
   },
   "dependencies": {
-    "vue": "^3.2.25"
+    "vue": "^3.2.25",
+    "vuedraggable": "^4.1.0"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^2.3.3",
